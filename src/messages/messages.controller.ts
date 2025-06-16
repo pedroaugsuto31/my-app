@@ -1,12 +1,14 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
 
 @Controller('messages')
 export class MessagesController {
+  @Get()
   findAll() {
-    return null;
+    return 'Essa rota retorna todos os recados';
   }
 
+  @Get(':id')
   findOne() {
-    return null;
+    return 'Essa rota retorna UM recados';
   }
 }

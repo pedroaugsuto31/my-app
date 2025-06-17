@@ -9,6 +9,12 @@ GET {{baseUrl}}/messages/1/
 
 ###
 POST {{baseUrl}}/messages/
+Content-Type: application/json
+
+{
+  "message": "Este é o recado que estou enviando",
+  "nova chave": "outro valor"
+}
 
 ### AppControllerGetHello
 

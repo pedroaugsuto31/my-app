@@ -18,29 +18,26 @@ export class MessagesController {
   findAll(@Query() pagination: any) {
     const { limit = 10, offset = 0 } = pagination;
     // return `Essa rota retorna todos os recados. Limit=${limit}, Offset=${offset}`;
-    return this.messagesService.hello();
+    return this.messagesService.findAll();
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return `Essa rota retorna o recado ID ${id}`;
+    return this.messagesService.findOne(id);
   }
 
   @Post()
   create(@Body() body: any) {
-    return body;
+    return this.messagesService.create(body);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() body: any) {
-    return {
-      id,
-      ...body,
-    };
+    return this.messagesService.update(id, body);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return `Essa rota apaga o recado ID ${id}`;
+    return this.messagesService.remove(id);
   }
 }

@@ -8,13 +8,17 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
+import { MessagesService } from './messages.service';
 
 @Controller('messages')
 export class MessagesController {
+  constructor(private readonly messagesService: MessagesService) {}
+
   @Get()
   findAll(@Query() pagination: any) {
     const { limit = 10, offset = 0 } = pagination;
-    return `Essa rota retorna todos os recados. Limit=${limit}, Offset=${offset}`;
+    // return `Essa rota retorna todos os recados. Limit=${limit}, Offset=${offset}`;
+    return this.messagesService.hello();
   }
 
   @Get(':id')

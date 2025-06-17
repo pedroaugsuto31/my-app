@@ -5,7 +5,7 @@
 GET {{baseUrl}}/messages/
 
 ###
-GET {{baseUrl}}/messages/10/
+GET {{baseUrl}}/messages/1/
 
 ### AppControllerGetHello
 

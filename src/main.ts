@@ -8,6 +8,7 @@ async function bootstrap() {
     new ValidationPipe({
       whitelist: true, // remove chaves que não estão no DTO
       forbidNonWhitelisted: true, // levantar erro quando a achave não existir
+      transform: false, // quando true tenta transformar os tipos de dados de param e dtos
     }),
   );
   await app.listen(process.env.PORT ?? 3000);

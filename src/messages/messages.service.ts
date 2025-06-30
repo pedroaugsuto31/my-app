@@ -12,18 +12,6 @@ export class MessagesService {
     private readonly messageRepository: Repository<Message>,
   ) {}
 
-  private lastId = 1;
-  private messages: Message[] = [
-    {
-      id: 1,
-      texto: 'Esse é um recado de teste',
-      de: 'João',
-      para: 'Maria',
-      lido: false,
-      data: new Date(),
-    },
-  ];
-
   throwNotFoundError() {
     throw new NotFoundException('Recado não encontrado');
   }
@@ -49,24 +37,23 @@ export class MessagesService {
     });
 
     if (!message) return this.throwNotFoundError();
+
+    return message;
   }
 
-  update(id: number, updateMessageDto: UpdateMessageDto) {
-    const messageExistsIndex = this.messages.findIndex(msg => msg.id === id);
+  async update(id: number, updateMessageDto: UpdateMessageDto) {
+    const partialUpdateMessageDto = {
+      lido: updateMessageDto.lido,
+      texto: updateMessageDto.texto,
+    };
+    const message = await this.messageRepository.preload({
+      id,
+      ...partialUpdateMessageDto,
+    });
 
-    if (messageExistsIndex < 0) {
-      this.throwNotFoundError();
-    }
+    if (!message) return this.throwNotFoundError();
 
-    if (messageExistsIndex >= 0) {
-      const messageExists = this.messages[messageExistsIndex];
-
-      this.messages[messageExistsIndex] = {
-        ...messageExists,
-        ...updateMessageDto,
-      };
-    }
-    return this.messages[messageExistsIndex];
+    return this.messageRepository.save(message);
   }
 
   async remove(id: number) {

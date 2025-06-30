@@ -43,8 +43,8 @@ export class MessagesService {
 
   async update(id: number, updateMessageDto: UpdateMessageDto) {
     const partialUpdateMessageDto = {
-      lido: updateMessageDto.lido,
-      texto: updateMessageDto.texto,
+      read: updateMessageDto.read,
+      text: updateMessageDto.text,
     };
     const message = await this.messageRepository.preload({
       id,

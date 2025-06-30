@@ -12,19 +12,19 @@ export class Message {
   id: number;
 
   @Column({ type: 'varchar', length: 255 })
-  texto: string;
+  text: string;
 
   @Column({ type: 'varchar', length: 50 })
-  de: string;
+  from: string;
 
   @Column({ type: 'varchar', length: 50 })
-  para: string;
+  to: string;
 
   @Column({ default: false })
-  lido: boolean;
+  read: boolean;
 
-  @Column()
-  data: Date;
+  // @Column()
+  // date: Date;
 
   @CreateDateColumn()
   createdAt?: Date;

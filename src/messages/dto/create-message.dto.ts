@@ -5,17 +5,17 @@ export class CreateMessageDto {
   @IsNotEmpty()
   @MinLength(5)
   @MaxLength(255)
-  readonly texto: string;
+  readonly text: string;
 
   @IsString()
   @IsNotEmpty()
   @MinLength(2)
   @MaxLength(50)
-  readonly de: string;
+  readonly from: string;
 
   @IsString()
   @IsNotEmpty()
   @MinLength(2)
   @MaxLength(50)
-  readonly para: string;
+  readonly to: string;
 }

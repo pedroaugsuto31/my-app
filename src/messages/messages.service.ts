@@ -28,6 +28,17 @@ export class MessagesService {
     throw new NotFoundException('Recado não encontrado');
   }
 
+  create(createMessageDto: CreateMessageDto) {
+    const newMessage = {
+      ...createMessageDto,
+      lido: false,
+      data: new Date(),
+    };
+    const message = this.messageRepository.create(newMessage);
+
+    return this.messageRepository.save(message);
+  }
+
   async findAll() {
     return await this.messageRepository.find();
   }
@@ -37,23 +48,7 @@ export class MessagesService {
       where: { id },
     });
 
-    if (message) return message;
-
-    this.throwNotFoundError();
-  }
-
-  create(createMessageDto: CreateMessageDto) {
-    this.lastId++;
-    const id = this.lastId;
-    const newMessage = {
-      id,
-      ...createMessageDto,
-      lido: false,
-      data: new Date(),
-    };
-    this.messages.push(newMessage);
-
-    return newMessage;
+    if (!message) return this.throwNotFoundError();
   }
 
   update(id: number, updateMessageDto: UpdateMessageDto) {
@@ -74,17 +69,11 @@ export class MessagesService {
     return this.messages[messageExistsIndex];
   }
 
-  remove(id: number) {
-    const messageExistsIndex = this.messages.findIndex(msg => msg.id === id);
+  async remove(id: number) {
+    const message = await this.messageRepository.findOneBy({ id });
 
-    if (messageExistsIndex < 0) {
-      this.throwNotFoundError();
-    }
+    if (!message) return this.throwNotFoundError();
 
-    const message = this.messages[messageExistsIndex];
-
-    this.messages.splice(messageExistsIndex, 1);
-
-    return message;
+    return this.messageRepository.remove(message);
   }
 }

@@ -18,24 +18,65 @@ export class MessagesService {
     throw new NotFoundException('Recado não encontrado');
   }
 
-  create(createMessageDto: CreateMessageDto) {
+  async create(createMessageDto: CreateMessageDto) {
+    const { fromId, toId } = createMessageDto;
+
+    const from = await this.personsService.findOne(fromId);
+    const to = await this.personsService.findOne(toId);
+
     const newMessage = {
-      ...createMessageDto,
+      text: createMessageDto.text,
+      from,
+      to,
       lido: false,
       data: new Date(),
     };
     const message = this.messageRepository.create(newMessage);
 
-    return this.messageRepository.save(message);
+    await this.messageRepository.save(message);
+
+    return {
+      ...message,
+      from: {
+        id: message.from.id,
+      },
+      to: {
+        id: message.to.id,
+      },
+    };
   }
 
   async findAll() {
-    return await this.messageRepository.find();
+    return await this.messageRepository.find({
+      relations: ['from', 'to'],
+      order: { createdAt: -1 },
+      select: {
+        from: {
+          id: true,
+          name: true,
+        },
+        to: {
+          id: true,
+          name: true,
+        },
+      },
+    });
   }
 
   async findOne(id: number) {
     const message = await this.messageRepository.findOne({
       where: { id },
+      relations: ['from', 'to'],
+      select: {
+        from: {
+          id: true,
+          name: true,
+        },
+        to: {
+          id: true,
+          name: true,
+        },
+      },
     });
 
     if (!message) return this.throwNotFoundError();

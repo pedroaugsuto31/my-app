@@ -23,7 +23,7 @@ export class Message {
 
   @ManyToOne(() => Person)
   @JoinColumn({ name: 'to' })
-  to: string;
+  to: Person;
 
   @Column({ default: false })
   read: boolean;

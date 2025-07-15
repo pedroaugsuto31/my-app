@@ -15,6 +15,7 @@ import { CreateMessageDto } from './dto/create-message.dto';
 import { UpdateMessageDto } from './dto/update-message.dto';
 import { PaginationDto } from '../common/dto/pagination.dto';
 import { AddHeaderInterceptor } from '../common/interceptors/add-header.interceptor';
+import { TimingConnectionInterceptor } from '../common/interceptors/timing-connection.interceptor';
 
 @Controller('messages')
 @UseInterceptors(AddHeaderInterceptor)
@@ -22,6 +23,7 @@ export class MessagesController {
   constructor(private readonly messagesService: MessagesService) {}
 
   @Get()
+  @UseInterceptors(TimingConnectionInterceptor)
   async findAll(@Query() paginationDto: PaginationDto) {
     return await this.messagesService.findAll(paginationDto);
   }

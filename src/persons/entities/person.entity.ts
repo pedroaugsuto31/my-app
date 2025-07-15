@@ -2,10 +2,12 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { IsEmail } from 'class-validator';
+import { Message } from '../../messages/entities/message.entity';
 
 @Entity()
 export class Person {
@@ -27,4 +29,10 @@ export class Person {
 
   @UpdateDateColumn()
   updatedAt?: Date;
+
+  @OneToMany(() => Message, message => message.from)
+  messagesSent: Message[];
+
+  @OneToMany(() => Message, message => message.from)
+  messagesReceived: Message[];
 }

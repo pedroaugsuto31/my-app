@@ -7,7 +7,7 @@ export class TimingConnectionInterceptor implements NestInterceptor {
 
     console.log('TimingConnectionInterceptor execute before');
 
-    // await new Promise(resolve => setTimeout(resolve, 10000));
+    await new Promise(resolve => setTimeout(resolve, 10));
 
     return next.handle().pipe(
       tap(() => {

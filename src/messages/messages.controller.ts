@@ -14,12 +14,13 @@ import { MessagesService } from './messages.service';
 import { CreateMessageDto } from './dto/create-message.dto';
 import { UpdateMessageDto } from './dto/update-message.dto';
 import { PaginationDto } from '../common/dto/pagination.dto';
-import { AddHeaderInterceptor } from '../common/interceptors/add-header.interceptor';
 import { TimingConnectionInterceptor } from '../common/interceptors/timing-connection.interceptor';
 import { ErrorHandlingInterceptor } from '../common/interceptors/error-handling.interceptor';
+import { SimpleCacheInterceptor } from '../common/interceptors/simple-cache.interceptor';
+import { AddHeaderInterceptor } from '../common/interceptors/add-header.interceptor';
 
 @Controller('messages')
-@UseInterceptors(AddHeaderInterceptor)
+@UseInterceptors(SimpleCacheInterceptor)
 export class MessagesController {
   constructor(private readonly messagesService: MessagesService) {}
 
@@ -29,7 +30,7 @@ export class MessagesController {
     return await this.messagesService.findAll(paginationDto);
   }
 
-  @UseInterceptors(ErrorHandlingInterceptor)
+  @UseInterceptors(AddHeaderInterceptor, ErrorHandlingInterceptor)
   @Get(':id')
   findOne(@Param('id', ParseIntPipe) id: number) {
     return this.messagesService.findOne(id);
